@@ -1,0 +1,43 @@
+{
+  "name": "mailtracker",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.12.4",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "next": "16.2.6"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @inbox-crm/web --filter @inbox-crm/extension dev",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "test:e2e": "pnpm --filter @mailtracker/web test:e2e",
+    "build": "pnpm -r build",
+    "build:extension": "pnpm --filter @mailtracker/extension build",
+    "format": "prettier --write .",
+    "seed": "tsx firebase/seed/index.ts",
+    "emulators": "firebase emulators:start --config firebase/firebase.json --project demo-inbox-crm",
+    "test:emulators": "firebase emulators:exec --only auth,firestore --config firebase/firebase.json --project demo-inbox-crm \"pnpm test\"",
+    "cleanup:tracking-events": "tsx scripts/cleanup-tracking-events.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.2",
+    "@types/node": "24.10.1",
+    "eslint": "9.39.2",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.7.4",
+    "tsx": "4.22.4",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.48.1",
+    "vitest": "4.1.9"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.28.1",
+      "postcss": "8.5.10"
+    }
+  }
+}

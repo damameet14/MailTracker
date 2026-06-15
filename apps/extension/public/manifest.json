@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "MailTracker",
+  "version": "0.1.0",
+  "description": "Private Gmail CRM sidebar and tracked-email composer",
+  "permissions": ["storage", "alarms", "notifications"],
+  "host_permissions": ["https://mail.google.com/*", "https://crm.d14.app/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "content_scripts": [{ "matches": ["https://mail.google.com/*"], "js": ["content.js"], "run_at": "document_idle" }],
+  "action": { "default_popup": "popup.html" },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'none'" }
+}
