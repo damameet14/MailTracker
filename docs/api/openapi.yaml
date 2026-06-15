@@ -4,7 +4,37 @@ info:
   version: 0.1.0
   description: Private CRM API. Open detections are tracking-image requests, not proof of reading.
 servers:
+  - url: https://crm.d14.app
   - url: http://localhost:3000
+components:
+  securitySchemes:
+    webSession:
+      type: apiKey
+      in: cookie
+      name: __session
+    extensionToken:
+      type: http
+      scheme: bearer
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, requestId]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            requestId: { type: string, format: uuid }
+    Contact:
+      type: object
+      required: [displayName, primaryEmail]
+      properties:
+        id: { type: string }
+        displayName: { type: string }
+        primaryEmail: { type: string, format: email }
+        status: { type: string, enum: [active, archived] }
 paths:
   /api/health:
     get:
@@ -36,3 +66,47 @@ paths:
           content:
             image/gif:
               schema: { type: string, contentEncoding: binary }
+  /api/auth/me:
+    get:
+      summary: Current authenticated owner
+      security: [{ webSession: [] }]
+      responses:
+        "200": { description: Authenticated owner }
+        "401": { description: Authentication required }
+  /api/contacts:
+    get:
+      summary: List contacts
+      security: [{ webSession: [] }, { extensionToken: [] }]
+      responses:
+        "200": { description: Contact list }
+    post:
+      summary: Create contact
+      security: [{ webSession: [] }, { extensionToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Contact" }
+      responses:
+        "201": { description: Contact created }
+        "409": { description: Duplicate active contact }
+  /api/extension/pair:
+    post:
+      summary: Exchange a one-time pairing code for an extension token
+      description: The opaque extension token is returned only once.
+      responses:
+        "200": { description: Paired device and opaque token }
+        "401": { description: Invalid or expired pairing code }
+  /api/tracked-emails/send:
+    post:
+      summary: Send a tracked email through Gmail
+      security: [{ webSession: [] }, { extensionToken: [] }]
+      responses:
+        "201": { description: Message sent }
+        "409": { description: Gmail not connected or request already processing }
+  /api/notifications/open-events:
+    get:
+      summary: List unacknowledged first detected-open notifications
+      security: [{ extensionToken: [] }]
+      responses:
+        "200": { description: Notification list }

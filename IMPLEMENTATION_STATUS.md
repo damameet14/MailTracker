@@ -16,18 +16,33 @@ Last updated: June 15, 2026
 - [x] Playwright dashboard smoke test
 - [x] Dependency audit with no high or critical findings
 
-## Later phases
+## Implemented MVP core
 
-- Phase 1 repository contracts and dashboard shell: started; authentication and CRUD persistence pending
-- Phase 2 extension pairing/sidebar: pending
-- Phase 3 Gmail OAuth/tracked sending: pending
-- Phase 4 open detection persistence: pending
-- Phase 5 product completion: pending
-- Phase 6 hardening/release: pending
+- [x] Firebase Google sign-in to secure session-cookie flow
+- [x] Owner restriction and server-side Firestore authorization
+- [x] Contact, company, note, task, pipeline, and deal APIs
+- [x] Contact duplicate reservation and CSV export
+- [x] One-time extension pairing and hashed device tokens
+- [x] Extension background-only authenticated API access
+- [x] Gmail OAuth state/callback and AES-GCM refresh-token storage
+- [x] Mock and real Gmail sending with sanitized MIME
+- [x] Idempotent tracked-email sends and failed-send token revocation
+- [x] Public tracking endpoint, classification, dedupe, counters, and first-open notifications
+- [x] Extension alarm polling and browser notifications
+- [x] Owner sign-in/settings UI and basic contact management UI
+
+## Remaining product depth
+
+- Advanced dashboard views, full Kanban UX, CSV import mapping, and richer record detail screens
+- Broader integration/e2e test coverage against Firebase emulators
+- Full OpenAPI coverage for every implemented endpoint
+- Chrome Web Store packaging/publishing
 
 ## Manual setup outstanding
 
-All Firebase, Gmail/Google Cloud, Vercel, production-domain, and Chrome installation actions described in `docs/setup` remain external.
+- Load the built unpacked extension from `apps/extension/dist` and pair it with the dashboard.
+- Complete an authenticated Gmail OAuth connection from the production Settings page.
+- Chrome Web Store publishing remains external and out of MVP scope.
 
 ## Credential tooling
 
@@ -49,21 +64,22 @@ All Firebase, Gmail/Google Cloud, Vercel, production-domain, and Chrome installa
 - [x] Vercel project connected to GitHub repository
 - [x] GitHub Actions connected to Firebase using keyless workload identity
 - [x] GitHub vulnerability alerts, automated security fixes, Dependabot, and CI enabled
-- [ ] Google sign-in provider and authorized production domains (Firebase Console)
-- [ ] Google OAuth consent screen and Gmail OAuth client credentials (Google Cloud Console)
+- [x] Google sign-in provider and authorized production domains
+- [x] Google OAuth consent screen and Gmail OAuth client credentials
 - [ ] Vercel preview environment variables
 - [ ] Billing-dependent Secret Manager setup
-- [ ] Name.com DNS A records for `crm` and `track`
+- [x] Name.com DNS A records for `crm` and `track`
 
 ## Production foundation
 
-- Dashboard/API domain pending DNS: `https://crm.d14.app`
-- Tracking domain pending DNS: `https://track.d14.app`
+- Dashboard/API domain active: `https://crm.d14.app`
+- Tracking domain active: `https://track.d14.app`
 - Temporary stable Vercel URL: `https://inbox-crm-rosy.vercel.app`
 - Live health endpoint: passed
 - Live generic tracking-pixel endpoint: passed
-- Gmail provider remains `mock` until OAuth credentials are configured
-- Name.com DNS records and Google console authentication/OAuth actions remain documented manual steps
+- Gmail OAuth credentials are configured and the production Google provider is active
+- Production Gmail provider is active and the latest deployment is aliased to `https://crm.d14.app`
+- Name.com DNS records and Google console authentication/OAuth actions are complete
 
 ## Latest validation
 
