@@ -13,6 +13,7 @@ test-results
 .vercel/
 .project-id.local
 firebase-service-account.local.json
+client_secret_*.apps.googleusercontent.com.json
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
