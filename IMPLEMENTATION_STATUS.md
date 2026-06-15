@@ -45,10 +45,15 @@ All Firebase, Gmail/Google Cloud, Vercel, production-domain, and Chrome installa
 - [x] Least-privileged server service account created
 - [x] Dedicated Vercel project `mailtracker` linked and production deployment created
 - [x] Production Firebase/server environment variables uploaded to Vercel
+- [x] Public GitHub repository: `https://github.com/damameet14/MailTracker`
+- [x] Vercel project connected to GitHub repository
+- [x] GitHub Actions connected to Firebase using keyless workload identity
+- [x] GitHub vulnerability alerts, automated security fixes, Dependabot, and CI enabled
 - [ ] Google sign-in provider and authorized production domains (Firebase Console)
 - [ ] Google OAuth consent screen and Gmail OAuth client credentials (Google Cloud Console)
 - [ ] Vercel preview environment variables
 - [ ] Billing-dependent Secret Manager setup
+- [ ] Name.com DNS A records for `crm` and `track`
 
 ## Production foundation
 
