@@ -6,5 +6,6 @@
 - Vercel production variables remain encrypted.
 - Firestore direct client access is denied by default.
 - Tracking endpoints disclose no token validity and never store raw IP addresses.
-- Long-lived service-account keys should eventually be replaced with Vercel OIDC/workload identity federation.
+- GitHub-to-Firebase deployments use workload identity federation and do not store a Firebase key in GitHub.
+- The Vercel runtime currently uses a narrowly scoped Firebase service-account key; migrate it to Vercel OIDC when application Firebase Admin access is implemented.
 - Rotate and revoke credentials immediately if secret scanning reports exposure.

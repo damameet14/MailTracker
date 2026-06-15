@@ -54,4 +54,6 @@ The Vercel project is already created and linked locally. To connect GitHub depl
 
 ## Firebase Git relationship
 
-Firebase does not need direct GitHub access for this architecture. Firestore rules and indexes are deployed using Firebase CLI. If GitHub Actions deployment is added later, use workload identity federation rather than committing or storing a long-lived service-account JSON key.
+Firebase is connected through GitHub Actions workload identity federation. Changes to Firestore rules or indexes on `main` deploy through `.github/workflows/deploy-firestore.yml`.
+
+The workflow uses short-lived Google credentials and stores no Firebase service-account key in GitHub.
