@@ -21,7 +21,7 @@
     "@types/chrome": "0.1.32",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "jsdom": "27.2.0",
+    "jsdom": "29.1.1",
     "typescript": "5.9.3",
     "vitest": "4.1.9"
   }
