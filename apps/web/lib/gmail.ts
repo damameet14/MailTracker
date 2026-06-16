@@ -56,13 +56,15 @@ export async function sendEmail(uid: string, input: SendTrackedEmailInput, track
 
 export async function storeGmailTokens(uid: string, code: string) {
   const oauth = getOAuthClient()
-  const { tokens } = await oauth.getToken(code)
+  const { tokens } = await oauth.getToken(code).catch(() => {
+    throw new ApiError('GMAIL_AUTH_EXPIRED', 'Google authorization could not be completed. Please try connecting Gmail again.', 409)
+  })
   if (!tokens.refresh_token) throw new ApiError('GMAIL_AUTH_EXPIRED', 'Google did not return a refresh token. Revoke access and reconnect.', 409)
   oauth.setCredentials(tokens)
-  const profile = await google.gmail({ version: 'v1', auth: oauth }).users.getProfile({ userId: 'me' })
+  const gmailAddress = await resolveGoogleAccountEmail(oauth, tokens.id_token)
   await getAdminDb().collection('users').doc(uid).collection('integrations').doc('gmail').set({
     connected: true,
-    gmailAddress: profile.data.emailAddress ?? null,
+    gmailAddress,
     grantedScopes: tokens.scope?.split(' ') ?? [],
     encryptedRefreshToken: await encryption().encrypt(tokens.refresh_token),
     tokenVersion: 1,
@@ -70,6 +72,24 @@ export async function storeGmailTokens(uid: string, code: string) {
     updatedAt: new Date(),
     revokedAt: null,
   })
+}
+
+async function resolveGoogleAccountEmail(oauth: ReturnType<typeof getOAuthClient>, idToken?: string | null) {
+  try {
+    const userinfo = await google.oauth2({ version: 'v2', auth: oauth }).userinfo.get()
+    if (userinfo.data.email) return userinfo.data.email
+  } catch {
+    // The Gmail send scope is sufficient for sending. Email profile data is a convenience only.
+  }
+  if (!idToken) return null
+  const payload = idToken.split('.')[1]
+  if (!payload) return null
+  try {
+    const decoded = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')) as { email?: string }
+    return decoded.email ?? null
+  } catch {
+    return null
+  }
 }
 
 export function createTrackingToken() {
