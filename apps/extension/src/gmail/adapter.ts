@@ -33,11 +33,21 @@ export class GmailDomAdapter implements GmailAdapter {
 
   observeContextChanges(callback: () => void): () => void {
     let timer: ReturnType<typeof setTimeout> | undefined
+    let lastSignature = ''
     const observer = new MutationObserver(() => {
       clearTimeout(timer)
-      timer = setTimeout(callback, 250)
+      timer = setTimeout(() => {
+        const signature = JSON.stringify({
+          key: this.getCurrentConversationKey(),
+          subject: this.getCurrentConversationSubject(),
+          participants: this.getCurrentConversationParticipants().map((participant) => participant.email.toLowerCase()).sort(),
+        })
+        if (signature === lastSignature) return
+        lastSignature = signature
+        callback()
+      }, 700)
     })
-    observer.observe(document.body, { childList: true, subtree: true })
+    observer.observe(document.querySelector('[role="main"]') ?? document.body, { childList: true, subtree: true })
     return () => {
       clearTimeout(timer)
       observer.disconnect()

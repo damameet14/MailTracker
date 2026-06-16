@@ -15,6 +15,19 @@ async function handleMessage(message: ExtensionRequest): Promise<unknown> {
     lastErrorCode: typeof stored.lastErrorCode === 'string' ? stored.lastErrorCode : null,
   }
   if (message.type === 'GET_STATUS') return status
+  if (message.type === 'TOGGLE_SIDEBAR') {
+    const tab = await chrome.tabs.get(message.tabId)
+    if (!tab.url?.startsWith('https://mail.google.com/')) {
+      await chrome.storage.local.set({ lastErrorCode: 'NOT_GMAIL_TAB' })
+      throw new Error('Open Gmail before launching the MailTracker sidebar.')
+    }
+    await chrome.scripting.executeScript({
+      target: { tabId: message.tabId },
+      files: ['content.js'],
+    })
+    await chrome.storage.local.set({ lastErrorCode: null })
+    return { opened: true }
+  }
   if (message.type === 'PAIR') {
     const response = await fetch(`${apiOrigin}/api/extension/pair`, {
       method: 'POST',

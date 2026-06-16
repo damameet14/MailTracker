@@ -1,6 +1,6 @@
 # Implementation Status
 
-Last updated: June 15, 2026
+Last updated: June 16, 2026
 
 ## Phase 0 - Complete
 
@@ -30,10 +30,15 @@ Last updated: June 15, 2026
 - [x] Public tracking endpoint, classification, dedupe, counters, and first-open notifications
 - [x] Extension alarm polling and browser notifications
 - [x] Owner sign-in/settings UI and basic contact management UI
+- [x] Settings UI for browser-extension pairing code generation and connected-device visibility
+- [x] Popup-activated Gmail sidebar injection to avoid automatic Gmail page flicker
+- [x] Tracked-email composer surfaced from the Gmail sidebar after extension pairing
+- [x] Warm MailTracker UI redesign started from `ui_example` references using live Firestore data only
 
 ## Remaining product depth
 
-- Advanced dashboard views, full Kanban UX, CSV import mapping, and richer record detail screens
+- Full contact detail, advanced dashboard views, full Kanban UX, CSV import mapping, and richer record detail screens
+- Gmail sidebar currently uses a right-side drawer and basic textarea composer; richer editor controls are still pending
 - Broader integration/e2e test coverage against Firebase emulators
 - Full OpenAPI coverage for every implemented endpoint
 - CSP currently allows Next.js runtime inline scripts; replacing this with request nonces is a hardening follow-up
