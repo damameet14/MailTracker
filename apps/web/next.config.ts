@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
           { key: 'X-Frame-Options', value: 'DENY' },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; connect-src 'self' https://*.googleapis.com https://securetoken.googleapis.com; frame-src https://accounts.google.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://accounts.google.com",
+            value: "default-src 'self'; connect-src 'self' https://*.googleapis.com https://securetoken.googleapis.com; frame-src https://accounts.google.com https://*.firebaseapp.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://apis.google.com https://www.gstatic.com",
           },
         ],
       },
