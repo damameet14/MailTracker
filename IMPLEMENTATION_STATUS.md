@@ -36,6 +36,7 @@ Last updated: June 15, 2026
 - Advanced dashboard views, full Kanban UX, CSV import mapping, and richer record detail screens
 - Broader integration/e2e test coverage against Firebase emulators
 - Full OpenAPI coverage for every implemented endpoint
+- CSP currently allows Next.js runtime inline scripts; replacing this with request nonces is a hardening follow-up
 - Chrome Web Store packaging/publishing
 
 ## Manual setup outstanding

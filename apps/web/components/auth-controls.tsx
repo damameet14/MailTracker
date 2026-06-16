@@ -2,7 +2,7 @@
 
 import { signInWithPopup, signOut } from 'firebase/auth'
 import { useEffect, useState } from 'react'
-import { firebaseAuth, googleProvider } from '@/lib/firebase-client'
+import { getFirebaseAuth, googleProvider } from '@/lib/firebase-client'
 
 export function AuthControls() {
   const [message, setMessage] = useState('Checking session...')
@@ -11,20 +11,24 @@ export function AuthControls() {
   }, [])
 
   async function login() {
-    setMessage('Signing in...')
-    const credential = await signInWithPopup(firebaseAuth, googleProvider)
-    const idToken = await credential.user.getIdToken()
-    const response = await fetch('/api/auth/session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idToken }),
-    })
-    setMessage(response.ok ? `Signed in as ${credential.user.email}` : 'Sign-in failed')
+    try {
+      setMessage('Signing in...')
+      const credential = await signInWithPopup(getFirebaseAuth(), googleProvider)
+      const idToken = await credential.user.getIdToken()
+      const response = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      })
+      setMessage(response.ok ? `Signed in as ${credential.user.email}` : 'Sign-in failed')
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Sign-in failed')
+    }
   }
 
   async function logout() {
     await fetch('/api/auth/session', { method: 'DELETE' })
-    await signOut(firebaseAuth)
+    await signOut(getFirebaseAuth())
     setMessage('Signed out')
   }
 
