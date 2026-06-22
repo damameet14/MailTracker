@@ -1,7 +1,12 @@
 node_modules
+.angular/
 .next
 dist
 coverage
+__pycache__/
+.pytest_cache/
+.venv/
+.mypy_cache/
 playwright-report
 test-results
 .env

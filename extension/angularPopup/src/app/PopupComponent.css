@@ -1,0 +1,314 @@
+.popupShell {
+  box-sizing: border-box;
+  width: 390px;
+  min-height: 520px;
+  background: #fbf7f1;
+  color: #232b2f;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.popupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #ddd6cd;
+  background: #ffffff;
+}
+
+.brandLockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brandLogo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  color: #1e272b;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+h2 {
+  color: #1f282c;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+h3 {
+  color: #77675d;
+  font-size: 12px;
+  font-weight: 800;
+  margin: 12px 0 8px;
+  text-transform: uppercase;
+}
+
+.popupHeader p,
+.emptyState p,
+.capabilityNote,
+.emptyHistory,
+.statusMessage,
+.historyRecord span,
+.toggleRow small {
+  color: #746960;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.iconButton,
+button,
+input,
+textarea {
+  box-sizing: border-box;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.iconButton {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #ddd6cd;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #354045;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.emptyState,
+.composePanel,
+.historyPanel,
+.settingsPanel {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.emptyState {
+  align-content: center;
+  min-height: 360px;
+  text-align: center;
+}
+
+.tabList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 10px 12px 0;
+  gap: 6px;
+}
+
+.tabList button,
+.segmentedControl button {
+  min-height: 36px;
+  border: 1px solid #ddd6cd;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #463e38;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tabList button.active,
+.segmentedControl button.active,
+.primaryButton {
+  border-color: #d6684c;
+  background: #d6684c;
+  color: #ffffff;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: #4a413b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid #d8d0c7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f282c;
+  padding: 10px 11px;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 116px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #d6684c;
+  box-shadow: 0 0 0 3px rgba(214, 104, 76, 0.14);
+}
+
+.twoColumnFields,
+.segmentedControl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.formattingToolbar {
+  display: grid;
+  grid-template-columns: repeat(5, 34px);
+  gap: 6px;
+}
+
+.formattingToolbar button {
+  width: 34px;
+  height: 32px;
+  border: 1px solid #d8d0c7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #384348;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.attachmentPicker {
+  border: 1px dashed #cfc6bd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #ffffff;
+}
+
+.attachmentPicker input {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.attachmentList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.attachmentList span,
+.statusPill {
+  border-radius: 999px;
+  background: #ede5dd;
+  color: #4d433c;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 8px;
+}
+
+.primaryButton,
+.secondaryButton,
+.textButton {
+  min-height: 40px;
+  border: 1px solid #d6684c;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.secondaryButton {
+  background: #ffffff;
+  color: #d6684c;
+}
+
+.textButton {
+  min-height: 32px;
+  border-color: transparent;
+  background: transparent;
+  color: #d6684c;
+}
+
+.panelTitleRow,
+.historyRecord,
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.historyGroups {
+  display: grid;
+  gap: 4px;
+  max-height: 330px;
+  overflow: auto;
+}
+
+.historyRecord {
+  padding: 10px;
+  border: 1px solid #ddd6cd;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.historyRecord div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.historyRecord strong {
+  overflow: hidden;
+  color: #1f282c;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.historyMeta {
+  justify-items: end;
+  flex: 0 0 auto;
+}
+
+.statusPill.openDetected {
+  background: #e7f1dd;
+  color: #53703b;
+}
+
+.toggleRow {
+  border: 1px solid #ddd6cd;
+  border-radius: 8px;
+  padding: 12px;
+  background: #ffffff;
+}
+
+.toggleRow span {
+  display: grid;
+  gap: 3px;
+}
+
+.toggleRow input {
+  width: 18px;
+  height: 18px;
+  accent-color: #d6684c;
+}
+
+.statusMessage {
+  min-height: 34px;
+  padding: 0 16px 14px;
+}

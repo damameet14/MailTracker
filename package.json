@@ -1,0 +1,37 @@
+{
+  "name": "mailtracker",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.12.4",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm build:extension",
+    "build:extension": "ng build mailTrackerExtensionPopup --configuration production && node tools/sanitizeExtensionPopupHtml.mjs && node tools/buildExtensionScripts.mjs && node tools/copyExtensionStaticFiles.mjs",
+    "lint": "pnpm typecheck:extension",
+    "test": "python -m compileall server api",
+    "typecheck": "pnpm typecheck:extension",
+    "typecheck:extension": "tsc --project tsconfig.extension.json --noEmit",
+    "dev:server": "fastapi dev server/main.py",
+    "start:server": "uvicorn server.main:app --reload"
+  },
+  "dependencies": {
+    "@angular/common": "^20.0.0",
+    "@angular/compiler": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/platform-browser": "^20.0.0",
+    "rxjs": "^7.8.0",
+    "tslib": "^2.8.0",
+    "zone.js": "^0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^20.0.0",
+    "@angular/cli": "^20.0.0",
+    "@types/chrome": "^0.0.320",
+    "@types/node": "^24.10.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^5.8.0"
+  }
+}

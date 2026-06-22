@@ -1,0 +1,174 @@
+<main class="popupShell">
+  <header class="popupHeader">
+    <div class="brandLockup">
+      <img class="brandLogo" src="logo.png" alt="">
+      <div>
+        <h1>MailTracker</h1>
+        <p>Gmail tracking image helper</p>
+      </div>
+    </div>
+    <button type="button" class="iconButton" title="Refresh status" [disabled]="isWorking" (click)="refreshCurrentGmailTabStatus()">
+      R
+    </button>
+  </header>
+
+  @if (currentGmailTabStatus === null) {
+    <section class="emptyState">
+      <h2>Checking Gmail tab</h2>
+      <p>MailTracker is checking the active browser tab.</p>
+    </section>
+  } @else if (!currentGmailTabStatus.isGmailTabOpen) {
+    <section class="emptyState">
+      <h2>Open Gmail to continue</h2>
+      <p>MailTracker only works when Gmail is open in the current browser session.</p>
+      <button type="button" class="primaryButton" (click)="openGmail()">Open Gmail</button>
+    </section>
+  } @else if (!currentGmailTabStatus.isGmailAuthenticated) {
+    <section class="emptyState">
+      <h2>Sign in to Gmail</h2>
+      <p>Gmail needs an active signed-in account before MailTracker can prepare tracked email.</p>
+      <button type="button" class="primaryButton" (click)="openGmail()">Continue in Gmail</button>
+    </section>
+  } @else {
+    <nav class="tabList" aria-label="MailTracker sections">
+      <button type="button" [class.active]="activePopupTabName === 'sendEmail'" (click)="setActivePopupTabName('sendEmail')">
+        Send Email
+      </button>
+      <button type="button" [class.active]="activePopupTabName === 'history'" (click)="setActivePopupTabName('history')">
+        History
+      </button>
+      <button type="button" [class.active]="activePopupTabName === 'settings'" (click)="setActivePopupTabName('settings')">
+        Settings
+      </button>
+    </nav>
+
+    @if (activePopupTabName === 'sendEmail') {
+      <form class="composePanel" (ngSubmit)="openPopupComposeInGmail()">
+        <label>
+          To
+          <input name="recipientEmailAddress" type="email" required [(ngModel)]="trackedEmailDraft.recipientEmailAddress">
+        </label>
+
+        <div class="twoColumnFields">
+          <label>
+            Cc
+            <input name="ccEmailAddresses" type="text" [(ngModel)]="trackedEmailDraft.ccEmailAddresses">
+          </label>
+          <label>
+            Bcc
+            <input name="bccEmailAddresses" type="text" [(ngModel)]="trackedEmailDraft.bccEmailAddresses">
+          </label>
+        </div>
+
+        <label>
+          Subject
+          <input name="emailSubject" type="text" required [(ngModel)]="trackedEmailDraft.emailSubject">
+        </label>
+
+        <div class="formattingToolbar" aria-label="Formatting options">
+          <button type="button" title="Bold">B</button>
+          <button type="button" title="Italic"><i>I</i></button>
+          <button type="button" title="Underline"><u>U</u></button>
+          <button type="button" title="Bulleted list">*</button>
+          <button type="button" title="Link">L</button>
+        </div>
+
+        <label>
+          Message
+          <textarea name="emailBody" rows="6" [(ngModel)]="trackedEmailDraft.emailBody"></textarea>
+        </label>
+
+        <label class="attachmentPicker">
+          <span>Attachments</span>
+          <input type="file" multiple (change)="rememberAttachmentSelection($event)">
+        </label>
+
+        @if (attachmentFileNames.length > 0) {
+          <div class="attachmentList">
+            @for (fileName of attachmentFileNames; track fileName) {
+              <span>{{ fileName }}</span>
+            }
+          </div>
+        }
+
+        <p class="capabilityNote">Attachments and rich text controls are staged for authenticated Gmail API sending. This draft opens in Gmail today.</p>
+
+        <button type="submit" class="primaryButton" [disabled]="isWorking">
+          Open Gmail compose with tracking
+        </button>
+      </form>
+    }
+
+    @if (activePopupTabName === 'history') {
+      <section class="historyPanel">
+        <div class="panelTitleRow">
+          <h2>Tracked Email History</h2>
+          <button type="button" class="textButton" [disabled]="isWorking" (click)="refreshHistory()">Refresh</button>
+        </div>
+
+        <div class="segmentedControl" role="group" aria-label="Group history by">
+          <button type="button" [class.active]="historyGroupName === 'recipient'" (click)="historyGroupName = 'recipient'">Recipient</button>
+          <button type="button" [class.active]="historyGroupName === 'status'" (click)="historyGroupName = 'status'">Status</button>
+          <button type="button" [class.active]="historyGroupName === 'dateSent'" (click)="historyGroupName = 'dateSent'">Date sent</button>
+        </div>
+
+        @if (historyRecords.length === 0) {
+          <p class="emptyHistory">No tracked emails yet.</p>
+        } @else {
+          <div class="historyGroups">
+            @for (group of getGroupedHistoryRecords(); track group.groupName) {
+              <section class="historyGroup">
+                <h3>{{ group.groupName }}</h3>
+                @for (record of group.records; track record.trackingToken) {
+                  <article class="historyRecord">
+                    <div>
+                      <strong>{{ record.emailSubject || '(No subject)' }}</strong>
+                      <span>{{ record.recipientEmailAddress }}</span>
+                    </div>
+                    <div class="historyMeta">
+                      <span class="statusPill" [class.openDetected]="record.status === 'openDetected'">{{ getStatusLabel(record) }}</span>
+                      <span>{{ formatHistoryDate(record.sentAtIsoString) }}</span>
+                    </div>
+                  </article>
+                }
+              </section>
+            }
+          </div>
+        }
+      </section>
+    }
+
+    @if (activePopupTabName === 'settings') {
+      <section class="settingsPanel">
+        <h2>Settings</h2>
+
+        <label class="toggleRow">
+          <span>
+            <strong>Sidebar</strong>
+            <small>Show MailTracker inside Gmail.</small>
+          </span>
+          <input type="checkbox" [checked]="sidebarEnabled" (change)="toggleSidebarEnabled()">
+        </label>
+
+        <div class="segmentedControl" role="group" aria-label="MailTracker display mode">
+          <button type="button" [class.active]="preferredDisplayMode === 'sidebar'" (click)="choosePreferredDisplayMode('sidebar')">
+            Sidebar
+          </button>
+          <button type="button" [class.active]="preferredDisplayMode === 'popup'" (click)="choosePreferredDisplayMode('popup')">
+            Popup
+          </button>
+        </div>
+
+        <button type="button" class="secondaryButton" [disabled]="!sidebarEnabled || isWorking" (click)="openSidebar()">
+          Toggle Gmail sidebar
+        </button>
+
+        <button type="button" class="secondaryButton" (click)="openGmailLogout()">
+          Logout from Gmail
+        </button>
+      </section>
+    }
+  }
+
+  <p class="statusMessage" aria-live="polite">{{ statusMessage }}</p>
+</main>
