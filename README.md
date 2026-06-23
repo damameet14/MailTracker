@@ -19,7 +19,9 @@ MailTracker is being rebuilt as a Gmail-only Chrome extension with an Angular po
 | `extension/background` | Chrome extension service worker classes. |
 | `extension/contentScript` | Gmail sidebar and Gmail compose integration classes. |
 | `extension/shared` | Shared extension request/response types and API client. |
-| `server/mailTrackerBackend` | FastAPI backend classes. |
+| `server/mailTrackerBackend/application_startup` | FastAPI backend dependency wiring. |
+| `server/mailTrackerBackend/modules/tracking_image_loading` | Backend tracking token, tracking image load, and open-detected summary capability. |
+| `server/mailTrackerBackend/transport` | Backend transport adapters that are not owned by a business module. |
 | `api/index.py` | Vercel Python entrypoint. |
 | `tools` | Build helpers for Chrome extension scripts. |
 | `ui_example` | Palette and UI reference images. |
@@ -45,4 +47,3 @@ After `pnpm build:extension`, load this folder as an unpacked extension:
 ```text
 dist/chrome-extension
 ```
-

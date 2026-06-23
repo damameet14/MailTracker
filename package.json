@@ -10,7 +10,7 @@
     "build": "pnpm build:extension",
     "build:extension": "ng build mailTrackerExtensionPopup --configuration production && node tools/sanitizeExtensionPopupHtml.mjs && node tools/buildExtensionScripts.mjs && node tools/copyExtensionStaticFiles.mjs",
     "lint": "pnpm typecheck:extension",
-    "test": "python -m compileall server api",
+    "test": "python -m unittest discover -s server -p \"test_*.py\" && python -m compileall server api",
     "typecheck": "pnpm typecheck:extension",
     "typecheck:extension": "tsc --project tsconfig.extension.json --noEmit",
     "dev:server": "fastapi dev server/main.py",

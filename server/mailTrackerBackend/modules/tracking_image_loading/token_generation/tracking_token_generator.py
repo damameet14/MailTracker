@@ -2,5 +2,5 @@ import secrets
 
 
 class TrackingTokenGenerator:
-    def generateTrackingToken(self) -> str:
+    def generate_tracking_token(self) -> str:
         return secrets.token_urlsafe(32)
